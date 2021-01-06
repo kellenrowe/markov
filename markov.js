@@ -8,8 +8,9 @@ class MarkovMachine {
 
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
-    // MORE CODE HERE
-    this.makeChains(words);
+    let markovChain = this.makeChains(words);
+    this.words = words;
+    this.markovChain = markovChain;
   }
 
   /** set markov chains:
@@ -20,58 +21,65 @@ class MarkovMachine {
   makeChains(words) {
     let markovObj = {};
     let keySet = new Set(words);
-    console.log("keySet = ", keySet);
+    // console.log("keySet = ", keySet);
 
-    for (let key in keySet){
+    for (let key of keySet){
       markovObj[key] = [];
     }
-    console.log("markovObj = ", markovObj);
+    // console.log("markovObj = ", markovObj);
 
-    // value = array containing words that come after each key
-    // iterate over words with for loop
     for (let i = 0; i < words.length; i++) {
       let key = words[i];
       let nextWord = words[i + 1] || null;
       markovObj[key].push(nextWord);
     }
-    console.log("markovObj = ", markovObj);
+    // console.log("markovObj = ", markovObj);
+
+    return markovObj;
   }
-    //   console.log('i = ', i);
-    //   console.log('words[i] = ', words[i]);
-    //   console.log('markovObj[words[i]] = ', markovObj[words[i]]);
-    //   let key = words[i];
-    //   let objItem = markovObj[key];
-    //   let nextWord = words[i + 1];
-    //   let val = [] || markovObj[key];
-
-    //   if (!objItem) {
-    //     if (nextWord) {
-    //       val.push(nextWord);
-    //     } else {
-    //       val.push(null);
-    //     }
-    //     objItem = val;
-    //     console.log('objItem = ', objItem);
-    //   } else {
-    //     let val = objItem;
-
-    //     if (nextWord) {
-    //       val.push(nextWord);
-    //     } else {
-    //       val.push(null);
-    //     }
-    //     objItem = val;
-    //     console.log('objItem = ', objItem);
-    //   }
-    // }
-    // console.log('markovObj =', markovObj);
-  // }
   
-
+  /** Helper function to generate a random number
+   *  Takes in object 
+   *  Returns a random number between 1 and length of object passed in
+   */
+  _getRandomNum(obj){
+    // console.log("obj = ", obj);
+    return Math.floor(Math.random() * Math.floor(obj.length));
+  }
 
   /** return random text from chains */
 
   getText(numWords = 100) {
-    // MORE CODE HERE
+    const objKeys = Object.keys(this.markovChain);
+    // console.log("objKeys = ", objKeys);
+    let text = [];
+    let chosenWord;
+    let currNumWords = text.length;
+    let randomKeyIdx = this._getRandomNum(objKeys);
+    let key = objKeys[randomKeyIdx];
+
+    while (chosenWord !== null && currNumWords <= numWords) {
+      // console.log("key = ", key);
+      let wordList = this.markovChain[key];
+      // console.log("wordlist = ", wordList);
+      let randomWordIdx = this._getRandomNum(wordList);
+
+      if (wordList.length === 1) chosenWord = wordList[0];
+  
+      chosenWord = wordList[randomWordIdx];
+      // console.log("chosenWord = ", chosenWord);
+      
+      key = chosenWord;
+      text.push(chosenWord);
+      currNumWords = text.length;
+    }
+    // console.log("text = ", text.join(' '));
+    return text.join(' ');
   }
 }
+
+let mm = new MarkovMachine("the cat in the hat");
+// console.log("mm = ", mm);
+// console.log("mm.words = ", mm.words);
+// console.log("mm.markovChain = ", mm.markovChain);
+mm.getText();
