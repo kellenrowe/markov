@@ -18,36 +18,54 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   makeChains(words) {
-    // create object
     let markovObj = {};
-    // create set
-    // let keysSet = new Set(words);
-    // keys = each unique word
+    let keySet = new Set(words);
+    console.log("keySet = ", keySet);
+
+    for (let key in keySet){
+      markovObj[key] = [];
+    }
+    console.log("markovObj = ", markovObj);
+
     // value = array containing words that come after each key
     // iterate over words with for loop
     for (let i = 0; i < words.length; i++) {
-      console.log(' i ', i)
-      if (markovObj[words[i]]) {
-        let val = markovObj[words[i]];
-        console.log('val', val)
-        if (words[i + 1]) {
-          markovObj[words[i]] = val.push(words[i + 1]);
-        } else {
-          markovObj[words[i]] = null;
-        }
-        console.log('markOb at i', markovObj[words[i]])
-      } else {
-        let val = [];
-        if (words[i + 1]) {
-          markovObj[words[i]] = val.push(words[i + 1]);
-        } else {
-          markovObj[words[i]] = null;
-        }
-        console.log(' key ', markovObj[words[i]])
-      }
+      let key = words[i];
+      let nextWord = words[i + 1] || null;
+      markovObj[key].push(nextWord);
     }
-    console.log('markovObj', markovObj);
+    console.log("markovObj = ", markovObj);
   }
+    //   console.log('i = ', i);
+    //   console.log('words[i] = ', words[i]);
+    //   console.log('markovObj[words[i]] = ', markovObj[words[i]]);
+    //   let key = words[i];
+    //   let objItem = markovObj[key];
+    //   let nextWord = words[i + 1];
+    //   let val = [] || markovObj[key];
+
+    //   if (!objItem) {
+    //     if (nextWord) {
+    //       val.push(nextWord);
+    //     } else {
+    //       val.push(null);
+    //     }
+    //     objItem = val;
+    //     console.log('objItem = ', objItem);
+    //   } else {
+    //     let val = objItem;
+
+    //     if (nextWord) {
+    //       val.push(nextWord);
+    //     } else {
+    //       val.push(null);
+    //     }
+    //     objItem = val;
+    //     console.log('objItem = ', objItem);
+    //   }
+    // }
+    // console.log('markovObj =', markovObj);
+  // }
   
 
 
